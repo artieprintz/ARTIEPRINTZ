@@ -7,56 +7,106 @@ dotenv.config();
 
 async function startServer() {
   const app = express();
+
   app.use(express.json());
 
   const PORT = 3000;
 
-  // Discord Webhook Proxy
+  // Discord Webhook API
   app.post('/api/order-notification', async (req, res) => {
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+
+    console.log('Incoming Order:', req.body);
+    console.log('Webhook URL:', webhookUrl);
+
     if (!webhookUrl) {
       console.warn('Discord webhook URL not configured');
-      return res.status(200).json({ success: false, message: 'Webhook not configured' });
+
+      return res.status(500).json({
+        success: false,
+        message: 'Webhook not configured',
+      });
     }
 
     try {
+      const {
+        name,
+        phone,
+        product,
+        address,
+        quantity,
+        price,
+      } = req.body;
+
+      const discordMessage = {
+        content: `
+🛒 **New Order Received**
+
+👤 Name: ${name || 'N/A'}
+📞 Phone: ${phone || 'N/A'}
+📦 Product: ${product || 'N/A'}
+🔢 Quantity: ${quantity || 'N/A'}
+💰 Price: ${price || 'N/A'}
+📍 Address: ${address || 'N/A'}
+        `,
+      };
+
       const response = await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(req.body),
+        body: JSON.stringify(discordMessage),
       });
 
+      const responseText = await response.text();
+
+      console.log('Discord Response:', responseText);
+
       if (response.ok) {
-        res.json({ success: true });
+        return res.json({
+          success: true,
+          message: 'Notification sent to Discord',
+        });
       } else {
-        res.status(500).json({ success: false, error: 'Failed to send to Discord' });
+        return res.status(500).json({
+          success: false,
+          error: responseText,
+        });
       }
     } catch (error) {
-      console.error('Error sending discord notification:', error);
-      res.status(500).json({ success: false, error: 'Internal server error' });
+      console.error('Discord Webhook Error:', error);
+
+      return res.status(500).json({
+        success: false,
+        error: 'Internal Server Error',
+      });
     }
   });
 
-  // Vite integration
+  // Vite Development Server
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+      },
       appType: 'spa',
     });
+
     app.use(vite.middlewares);
   } else {
-    // Production serving
+    // Production Build
     const distPath = path.join(process.cwd(), 'dist');
+
     app.use(express.static(distPath));
+
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`✅ Server running on http://localhost:${PORT}`);
   });
 }
 
