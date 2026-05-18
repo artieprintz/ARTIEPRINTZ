@@ -60,14 +60,9 @@ export default function Checkout() {
       // 1. Save order to DB
       const order = await dbService.createOrder({
         customer_name: formData.fullName,
-        phone: formData.whatsapp, // Using whatsapp as main phone
-        whatsapp: formData.whatsapp,
-        address: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip} [Method: ${shippingMethod}]`,
+        phone: formData.whatsapp,
+        address: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip} | ${shippingMethod}${formData.notes ? ' | Notes: ' + formData.notes : ''}${discount > 0 ? ` | Promo: ${formData.promoCode} (-${discount})` : ''}`,
         total: totalAmount,
-        status: 'PENDING',
-        notes: formData.notes + 
-               (discount > 0 ? ` [Promo: ${formData.promoCode} (-${discount})]` : '') + 
-               ` [Shipping: ${shippingMethod}]`
       }, items.map(item => ({
         product_id: item.productId,
         product_name: item.name,
@@ -82,28 +77,32 @@ export default function Checkout() {
 
       if (!order) throw new Error("Failed to place order.");
 
-      // 3. Send Discord Webhook via our proxy server
-      const discordPayload = {
-        embeds: [{
-          title: "🚨 NEW ORDER PLACED",
-          color: 0x000000,
-          fields: [
-            { name: "Order ID", value: order.id.toString(), inline: true },
-            { name: "Customer", value: formData.fullName, inline: true },
-            { name: "Phone", value: formData.whatsapp, inline: true },
-            { name: "Address", value: `${formData.address}, ${formData.city}`, inline: false },
-            { name: "Total", value: formatCurrency(totalAmount), inline: true },
-            { name: "Items", value: items.map(i => `• ${i.name} x${i.quantity}`).join('\n') }
-          ],
-          timestamp: new Date().toISOString()
-        }]
-      };
+      // 3. Send Discord Webhook (best-effort — never blocks the order)
+      try {
+        const discordPayload = {
+          embeds: [{
+            title: "🚨 NEW ORDER PLACED",
+            color: 0x000000,
+            fields: [
+              { name: "Order ID", value: order.id.toString(), inline: true },
+              { name: "Customer", value: formData.fullName, inline: true },
+              { name: "Phone", value: formData.whatsapp, inline: true },
+              { name: "Address", value: `${formData.address}, ${formData.city}`, inline: false },
+              { name: "Total", value: formatCurrency(totalAmount), inline: true },
+              { name: "Items", value: items.map(i => `• ${i.name} x${i.quantity}`).join('\n') }
+            ],
+            timestamp: new Date().toISOString()
+          }]
+        };
 
-      await fetch('/api/order-notification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordPayload)
-      });
+        await fetch('/api/order-notification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(discordPayload)
+        });
+      } catch (discordErr) {
+        console.warn('[Discord] Notification failed (order still saved):', discordErr);
+      }
 
       // 4. Success!
       const orderSummary = {

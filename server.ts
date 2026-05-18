@@ -12,75 +12,32 @@ async function startServer() {
 
   const PORT = 3000;
 
-  // Discord Webhook API
+  // Discord Webhook API — proxies embed payloads to Discord
   app.post('/api/order-notification', async (req, res) => {
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
 
-    console.log('Incoming Order:', req.body);
-    console.log('Webhook URL:', webhookUrl);
-
     if (!webhookUrl) {
-      console.warn('Discord webhook URL not configured');
-
-      return res.status(500).json({
-        success: false,
-        message: 'Webhook not configured',
-      });
+      console.warn('[Discord] DISCORD_WEBHOOK_URL not configured');
+      return res.status(200).json({ success: false, reason: 'Webhook not configured' });
     }
 
     try {
-      const {
-        name,
-        phone,
-        product,
-        address,
-        quantity,
-        price,
-      } = req.body;
-
-      const discordMessage = {
-        content: `
-🛒 **New Order Received**
-
-👤 Name: ${name || 'N/A'}
-📞 Phone: ${phone || 'N/A'}
-📦 Product: ${product || 'N/A'}
-🔢 Quantity: ${quantity || 'N/A'}
-💰 Price: ${price || 'N/A'}
-📍 Address: ${address || 'N/A'}
-        `,
-      };
-
       const response = await fetch(webhookUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(discordMessage),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body),
       });
 
-      const responseText = await response.text();
-
-      console.log('Discord Response:', responseText);
-
-      if (response.ok) {
-        return res.json({
-          success: true,
-          message: 'Notification sent to Discord',
-        });
-      } else {
-        return res.status(500).json({
-          success: false,
-          error: responseText,
-        });
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('[Discord] Webhook error:', response.status, text);
+        return res.status(200).json({ success: false, reason: text });
       }
-    } catch (error) {
-      console.error('Discord Webhook Error:', error);
 
-      return res.status(500).json({
-        success: false,
-        error: 'Internal Server Error',
-      });
+      return res.json({ success: true });
+    } catch (error) {
+      console.error('[Discord] Error:', error);
+      return res.status(200).json({ success: false, reason: 'Internal error' });
     }
   });
 

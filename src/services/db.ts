@@ -1,202 +1,205 @@
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+
+export interface OrderItem {
+  product_id: string;
+  product_name: string;
+  quantity: number;
+  price: number;
+  size?: string;
+  variant?: string;
+  option?: string;
+  custom_size?: string;
+  upload_url?: string | null;
+}
+
+export interface OrderInput {
+  customer_name: string;
+  phone: string;
+  address: string;
+  total: number;
+}
+
+export interface Order {
+  id: number;
+  created_at: string;
+  customer_name: string;
+  phone: string;
+  address: string;
+  products: OrderItem[];
+  total: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Table name — must match your Supabase table exactly                */
+/* ------------------------------------------------------------------ */
+
+const TABLE = 'order_data';
+
+/* ------------------------------------------------------------------ */
+/*  Local-storage helpers (fallback when Supabase is not configured)   */
+/* ------------------------------------------------------------------ */
+
+const LOCAL_KEY = 'artie_orders';
+
+function getLocalOrders(): Order[] {
+  try {
+    const raw = localStorage.getItem(LOCAL_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalOrders(orders: Order[]) {
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(orders));
+}
+
+/* ------------------------------------------------------------------ */
+/*  Database service                                                   */
+/* ------------------------------------------------------------------ */
+
 export const dbService = {
 
-// GET ALL ORDERS
-async getOrders() {
-if (isSupabaseConfigured) {
-try {
-const { data, error } = await supabase
-.from('order_data')
-.select('*')
-.order('created_at', { ascending: false });
+  // ── GET ALL ORDERS ──────────────────────────────────────────────
+  async getOrders(): Promise<Order[]> {
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from(TABLE)
+          .select('*')
+          .order('created_at', { ascending: false });
 
-```
-    if (error) throw error;
+        if (error) throw error;
 
-    return data || [];
-
-  } catch (err) {
-    console.error('Supabase getOrders error:', err);
-  }
-}
-
-// Local fallback
-const local = localStorage.getItem('artie_orders');
-return local ? JSON.parse(local) : [];
-```
-
-},
-
-// CREATE ORDER
-async createOrder(orderData: any, items: any[]) {
-
-```
-if (isSupabaseConfigured) {
-  try {
-
-    const { data, error } = await supabase
-      .from('order_data')
-      .insert([
-        {
-          customer_name: orderData.customer_name,
-          phone: orderData.phone,
-          address: orderData.address,
-          products: items,
-          total: orderData.total.toString(),
-        }
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('SUPABASE INSERT ERROR:', error);
-      throw error;
+        return (data || []).map((row: any) => ({
+          ...row,
+          products: typeof row.products === 'string'
+            ? JSON.parse(row.products)
+            : (row.products || []),
+        }));
+      } catch (err) {
+        console.error('[DB] getOrders error:', err);
+      }
     }
 
-    console.log('ORDER SAVED:', data);
+    return getLocalOrders();
+  },
 
-    return data;
+  // ── CREATE ORDER ────────────────────────────────────────────────
+  async createOrder(orderData: OrderInput, items: OrderItem[]): Promise<Order | null> {
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from(TABLE)
+          .insert([
+            {
+              customer_name: orderData.customer_name,
+              phone: orderData.phone,
+              address: orderData.address,
+              total: orderData.total.toString(),
+              products: items,
+            },
+          ])
+          .select()
+          .single();
 
-  } catch (err) {
-    console.error('Supabase createOrder error:', err);
-  }
-}
+        if (error) {
+          console.error('[DB] INSERT error:', error);
+          throw error;
+        }
 
-// Local fallback
-const id = Math.floor(Math.random() * 10000);
+        console.log('[DB] Order saved:', data);
+        return data as Order;
+      } catch (err) {
+        console.error('[DB] createOrder error:', err);
+      }
+    }
 
-const newOrder = {
-  ...orderData,
-  id,
-  created_at: new Date().toISOString(),
-  products: items
-};
+    // Local fallback
+    const id = Date.now();
+    const newOrder: Order = {
+      id,
+      created_at: new Date().toISOString(),
+      customer_name: orderData.customer_name,
+      phone: orderData.phone,
+      address: orderData.address,
+      total: orderData.total.toString(),
+      products: items,
+    };
 
-const local = localStorage.getItem('artie_orders');
-const orders = local ? JSON.parse(local) : [];
+    const orders = getLocalOrders();
+    saveLocalOrders([newOrder, ...orders]);
+    return newOrder;
+  },
 
-localStorage.setItem(
-  'artie_orders',
-  JSON.stringify([newOrder, ...orders])
-);
-
-return newOrder;
-```
-
-},
-
-// UPDATE STATUS
-async updateOrderStatus(orderId: number | string, status: string) {
-
-```
-if (isSupabaseConfigured) {
-  try {
-
-    const { error } = await supabase
-      .from('order_data')
-      .update({ status })
-      .eq('id', orderId);
-
-    if (error) throw error;
-
+  // ── UPDATE STATUS (no status column — update total as workaround) ─
+  async updateOrderStatus(_orderId: number | string, _status: string): Promise<boolean> {
+    // Note: order_data table has no 'status' column.
+    // This is a no-op for now. Add a 'status' column if you need it.
+    console.warn('[DB] updateOrderStatus: no status column in order_data table');
     return true;
+  },
 
-  } catch (err) {
-    console.error('Supabase updateStatus error:', err);
-  }
-}
+  // ── GET SINGLE ORDER ────────────────────────────────────────────
+  async getOrderById(orderId: string): Promise<Order | null> {
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from(TABLE)
+          .select('*')
+          .eq('id', orderId)
+          .single();
 
-return true;
-```
+        if (error) throw error;
 
-},
+        return {
+          ...data,
+          products: typeof data.products === 'string'
+            ? JSON.parse(data.products)
+            : (data.products || []),
+        } as Order;
+      } catch (err) {
+        console.error('[DB] getOrderById error:', err);
+      }
+    }
 
-// GET SINGLE ORDER
-async getOrderById(orderId: string) {
+    const orders = getLocalOrders();
+    return orders.find((o) => o.id.toString() === orderId.toString()) || null;
+  },
 
-```
-if (isSupabaseConfigured) {
-  try {
+  // ── FILE UPLOAD ─────────────────────────────────────────────────
+  async uploadFile(file: File): Promise<string | null> {
+    if (isSupabaseConfigured) {
+      try {
+        const ext = file.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${ext}`;
 
-    const { data, error } = await supabase
-      .from('order_data')
-      .select('*')
-      .eq('id', orderId)
-      .single();
+        const { error: uploadError } = await supabase.storage
+          .from('prints')
+          .upload(fileName, file);
 
-    if (error) throw error;
+        if (uploadError) throw uploadError;
 
-    return data;
+        const { data: { publicUrl } } = supabase.storage
+          .from('prints')
+          .getPublicUrl(fileName);
 
-  } catch (err) {
-    console.error('Supabase getOrderById error:', err);
-  }
-}
+        return publicUrl;
+      } catch (err) {
+        console.error('[DB] upload error:', err);
+      }
+    }
 
-// Local fallback
-const local = localStorage.getItem('artie_orders');
-
-if (local) {
-  const orders = JSON.parse(local);
-
-  return orders.find(
-    (o: any) => o.id.toString() === orderId.toString()
-  );
-}
-
-return null;
-```
-
-},
-
-// FILE UPLOAD
-async uploadFile(file: File) {
-
-```
-if (isSupabaseConfigured) {
-  try {
-
-    const fileExt = file.name.split('.').pop();
-
-    const fileName =
-      `${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2, 8)}.${fileExt}`;
-
-    const { error: uploadError } = await supabase
-      .storage
-      .from('prints')
-      .upload(fileName, file);
-
-    if (uploadError) throw uploadError;
-
-    const {
-      data: { publicUrl }
-    } = supabase
-      .storage
-      .from('prints')
-      .getPublicUrl(fileName);
-
-    return publicUrl;
-
-  } catch (err) {
-    console.error('Supabase upload error:', err);
-  }
-}
-
-// Local fallback
-const reader = new FileReader();
-
-const promise = new Promise<string>((resolve, reject) => {
-  reader.onload = () => resolve(reader.result as string);
-  reader.onerror = reject;
-});
-
-reader.readAsDataURL(file);
-
-return await promise;
-```
-
-}
+    // Local fallback — convert to data URL
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  },
 };
