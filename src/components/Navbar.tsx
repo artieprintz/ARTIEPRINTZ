@@ -51,8 +51,8 @@ export default function Navbar() {
             <Link 
               key={link.path}
               to={link.path} 
-              className={`text-lg uppercase tracking-[0.2em] font-medium hover:text-zinc-400 transition-colors ${
-                location.pathname === link.path ? 'text-white' : 'text-zinc-500'
+              className={`text-lg uppercase tracking-[0.2em] font-medium hover:text-zinc-200 transition-colors ${
+                location.pathname === link.path ? 'text-white' : 'text-zinc-400'
               }`}
             >
               {link.title}
@@ -62,7 +62,7 @@ export default function Navbar() {
             to="/cart" 
             className="text-lg uppercase tracking-[0.2em] font-medium transition-opacity relative group"
           >
-            <span className={location.pathname === '/cart' ? 'text-white' : 'text-zinc-500 hover:text-zinc-400'}>
+            <span className={location.pathname === '/cart' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'}>
               Cart <span className="ml-1 text-brand-accent italic font-bold">({items.length})</span>
             </span>
             <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-accent transition-all group-hover:w-full"></span>
@@ -71,7 +71,7 @@ export default function Navbar() {
             to="/wishlist" 
             className="text-lg uppercase tracking-[0.2em] font-medium transition-opacity relative group"
           >
-            <span className={location.pathname === '/wishlist' ? 'text-white' : 'text-zinc-500 hover:text-zinc-400'}>
+            <span className={location.pathname === '/wishlist' ? 'text-white' : 'text-zinc-400 hover:text-zinc-200'}>
               <Heart className={`w-3.5 h-3.5 inline-block mr-1 -mt-0.5 ${wishlistItems.length > 0 ? 'fill-brand-accent text-brand-accent' : ''}`} />
               Wishlist
             </span>

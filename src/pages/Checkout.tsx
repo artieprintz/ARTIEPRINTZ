@@ -132,7 +132,7 @@ export default function Checkout() {
   return (
     <div className="min-h-screen pt-40 pb-40 px-10 bg-[#080808]">
       <div className="max-w-5xl mx-auto">
-        <button onClick={() => navigate('/cart')} className="mb-16 text-[10px] font-black uppercase tracking-[0.3em] flex items-center text-zinc-500 hover:text-white transition-colors border border-zinc-800 px-6 py-3">
+        <button onClick={() => navigate('/cart')} className="mb-16 text-[10px] font-black uppercase tracking-[0.3em] flex items-center text-zinc-300 hover:text-white transition-colors border border-zinc-700 px-6 py-3">
            <ArrowLeft className="w-3 h-3 mr-2" /> Back to Cart
         </button>
         
@@ -151,7 +151,7 @@ export default function Checkout() {
                       required
                       name="fullName"
                       placeholder="FULL NAME"
-                      className="w-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-700"
+                      className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400"
                       onChange={handleInputChange}
                     />
                     <div className="grid grid-cols-1 gap-4">
@@ -159,7 +159,7 @@ export default function Checkout() {
                          required
                          name="whatsapp"
                          placeholder="WHATSAPP NUMBER"
-                         className="w-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-700"
+                         className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400"
                          onChange={handleInputChange}
                        />
                     </div>
@@ -168,7 +168,7 @@ export default function Checkout() {
                       name="address"
                       placeholder="FULL ADDRESS (STREET, NO, LANDMARK)"
                       rows={3}
-                      className="w-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-700 resize-none"
+                      className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400 resize-none"
                       onChange={handleInputChange}
                     />
                     <div className="grid grid-cols-3 gap-4">
@@ -176,7 +176,7 @@ export default function Checkout() {
                          required
                          name="city"
                          placeholder="CITY"
-                         className="w-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-700"
+                         className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400"
                          onChange={handleInputChange}
                        />
                        <div className="relative">
@@ -184,32 +184,32 @@ export default function Checkout() {
                             required
                             name="state"
                             value={formData.state}
-                            className="w-full h-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white appearance-none"
+                            className="w-full h-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white appearance-none"
                             onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                           >
                             <option value="Tamil Nadu">Tamil Nadu</option>
                           </select>
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500 text-[8px] font-black uppercase">Only TN</div>
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-brand-accent text-[8px] font-black uppercase">Only TN</div>
                        </div>
                        <input 
                          required
                          name="zip"
                          placeholder="PIN CODE"
-                         className="w-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-700"
+                         className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400"
                          onChange={handleInputChange}
                        />
                     </div>
 
                     {/* Shipping Method Selection */}
                     <div className="pt-8 border-t border-zinc-900">
-                       <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-500 italic">Shipping Method</h3>
+                       <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-300 italic">Shipping Method</h3>
                        <div className="grid grid-cols-2 gap-4">
                           <button 
                             type="button"
                             onClick={() => setShippingMethod('PICKUP')}
                             className={cn(
                               "px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] italic border transition-all flex flex-col items-center",
-                              shippingMethod === 'PICKUP' ? "bg-white text-black border-white" : "bg-zinc-950 text-zinc-500 border-zinc-900 hover:border-zinc-700"
+                              shippingMethod === 'PICKUP' ? "bg-white text-black border-white" : "bg-zinc-950 text-zinc-300 border-zinc-700 hover:border-zinc-500 hover:text-white"
                             )}
                           >
                             <span>Pick up</span>
@@ -220,7 +220,7 @@ export default function Checkout() {
                             onClick={() => setShippingMethod('DELIVERY')}
                             className={cn(
                               "px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] italic border transition-all flex flex-col items-center",
-                              shippingMethod === 'DELIVERY' ? "bg-white text-black border-white" : "bg-zinc-950 text-zinc-500 border-zinc-900 hover:border-zinc-700"
+                              shippingMethod === 'DELIVERY' ? "bg-white text-black border-white" : "bg-zinc-950 text-zinc-300 border-zinc-700 hover:border-zinc-500 hover:text-white"
                             )}
                           >
                             <span>Delivery</span>
@@ -232,7 +232,7 @@ export default function Checkout() {
                       name="notes"
                       placeholder="ORDER NOTES (OPTIONAL)"
                       rows={2}
-                      className="w-full bg-zinc-900/50 border border-zinc-800 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-700 resize-none"
+                      className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400 resize-none"
                       onChange={handleInputChange}
                     />
                  </div>

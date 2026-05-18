@@ -69,7 +69,7 @@ export default function ProductDetails() {
     <div className="bg-[#080808] min-h-screen pt-24 pb-32">
       <div className="max-w-7xl mx-auto px-10">
         {/* Breadcrumbs */}
-        <div className="flex items-center space-x-2 text-[9px] uppercase tracking-[0.3em] font-medium text-zinc-500 mb-16">
+        <div className="flex items-center space-x-2 text-[9px] uppercase tracking-[0.3em] font-medium text-zinc-350 mb-16">
           <button onClick={() => navigate('/shop')} className="hover:text-brand-accent flex items-center transition-colors">
              <ArrowLeft className="w-3 h-3 mr-2" /> Back to Shop
           </button>
@@ -117,13 +117,13 @@ export default function ProductDetails() {
                 )}
 
                 <div className="grid grid-cols-2 gap-4">
-                   <div className="p-6 bg-zinc-900/30 border border-zinc-900/50 flex flex-col items-center justify-center text-center">
-                      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Feature 01</span>
-                      <p className="text-[10px] font-black uppercase tracking-widest italic text-white/50 leading-tight">CUSTOM WALL POSTER</p>
+                   <div className="p-6 bg-zinc-900/30 border border-zinc-700/50 flex flex-col items-center justify-center text-center">
+                      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-300 mb-2">Feature 01</span>
+                      <p className="text-[10px] font-black uppercase tracking-widest italic text-white/80 leading-tight">CUSTOM WALL POSTER</p>
                    </div>
-                   <div className="p-6 bg-zinc-900/30 border border-zinc-900/50 flex flex-col items-center justify-center text-center">
-                      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Feature 02</span>
-                      <p className="text-[10px] font-black uppercase tracking-widest italic text-white/50 leading-tight">PREMIUM FINISH</p>
+                   <div className="p-6 bg-zinc-900/30 border border-zinc-700/50 flex flex-col items-center justify-center text-center">
+                      <span className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-300 mb-2">Feature 02</span>
+                      <p className="text-[10px] font-black uppercase tracking-widest italic text-white/80 leading-tight">PREMIUM FINISH</p>
                    </div>
                 </div>
              </div>
@@ -143,7 +143,7 @@ export default function ProductDetails() {
                 {/* Variant Selector */}
                 {product.variants && (
                   <div>
-                    <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-500">Select Style</h4>
+                    <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-300">Select Style</h4>
                     <div className="flex flex-wrap gap-4">
                       {product.variants.map((v) => (
                         <button
@@ -151,7 +151,7 @@ export default function ProductDetails() {
                           onClick={() => setSelectedVariant(v)}
                           className={cn(
                             "px-8 py-3 text-[10px] uppercase font-black tracking-[0.2em] border transition-all",
-                            selectedVariant === v ? "bg-white text-black border-white" : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                            selectedVariant === v ? "bg-white text-black border-white" : "border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white"
                           )}
                         >
                           {v}
@@ -164,7 +164,7 @@ export default function ProductDetails() {
                 {/* Size Selector */}
                 {product.sizes && (
                   <div>
-                    <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-500">Select Size</h4>
+                    <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-300">Select Size</h4>
                     <div className="flex flex-wrap gap-4">
                       {product.sizes.map((s) => (
                         <button
@@ -172,7 +172,7 @@ export default function ProductDetails() {
                           onClick={() => setSelectedSize(s)}
                           className={cn(
                             "px-8 py-3 text-[10px] uppercase font-black tracking-[0.2em] border transition-all",
-                            selectedSize === s ? "bg-white text-black border-white" : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                            selectedSize === s ? "bg-white text-black border-white" : "border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white"
                           )}
                         >
                           {s}
@@ -183,7 +183,7 @@ export default function ProductDetails() {
                       <input 
                         type="text"
                         placeholder="ENTER YOUR SIZE"
-                        className="mt-6 w-full bg-zinc-900/50 border border-zinc-800 px-6 py-4 text-[10px] uppercase tracking-[0.2em] focus:outline-none focus:border-brand-accent transition-all font-medium"
+                        className="mt-6 w-full bg-zinc-900/50 border border-zinc-700 px-6 py-4 text-[10px] uppercase tracking-[0.2em] focus:outline-none focus:border-brand-accent transition-all font-medium text-white placeholder:text-zinc-500"
                         value={customSize}
                         onChange={(e) => setCustomSize(e.target.value)}
                       />
@@ -194,7 +194,7 @@ export default function ProductDetails() {
                 {/* Magazine Options */}
                 {product.options && (
                   <div>
-                    <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-500">Options</h4>
+                    <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-300">Options</h4>
                     <div className="flex flex-wrap gap-4">
                       {product.options.map((o) => (
                         <button
@@ -202,7 +202,7 @@ export default function ProductDetails() {
                           onClick={() => setSelectedOption(o)}
                           className={cn(
                             "px-8 py-3 text-[10px] uppercase font-black tracking-[0.2em] border transition-all",
-                            selectedOption === o ? "bg-white text-black border-white" : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                            selectedOption === o ? "bg-white text-black border-white" : "border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white"
                           )}
                         >
                           {o}
@@ -214,18 +214,18 @@ export default function ProductDetails() {
 
                 {/* Quantity */}
                 <div className="pt-8 border-t border-zinc-900">
-                  <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-500">Quantity</h4>
-                  <div className="flex items-center space-x-6 bg-zinc-950 border border-zinc-900 w-fit p-2">
+                  <h4 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-300">Quantity</h4>
+                  <div className="flex items-center space-x-6 bg-zinc-950 border border-zinc-700 w-fit p-2">
                      <button 
                        onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                       className="w-10 h-10 flex items-center justify-center hover:bg-zinc-900 transition-colors text-zinc-500 hover:text-white"
+                       className="w-10 h-10 flex items-center justify-center hover:bg-zinc-900 transition-colors text-zinc-400 hover:text-white"
                      >
                        <Minus className="w-4 h-4" />
                      </button>
                      <span className="text-sm font-mono font-bold w-4 text-center">{quantity}</span>
                      <button 
                        onClick={() => setQuantity(prev => prev + 1)}
-                       className="w-10 h-10 flex items-center justify-center hover:bg-zinc-900 transition-colors text-zinc-500 hover:text-white"
+                       className="w-10 h-10 flex items-center justify-center hover:bg-zinc-900 transition-colors text-zinc-400 hover:text-white"
                      >
                        <Plus className="w-4 h-4" />
                      </button>
@@ -276,7 +276,7 @@ export default function ProductDetails() {
                       </button>
                    </div>
                    
-                   <p className="text-[10px] text-zinc-500 tracking-[0.05em] flex items-start leading-relaxed uppercase font-medium">
+                   <p className="text-[10px] text-zinc-300 tracking-[0.05em] flex items-start leading-relaxed uppercase font-medium">
                      <Info className="w-3 h-3 mr-3 mt-1 flex-shrink-0 text-brand-accent" />
                      Ready in 48 hours. Fast global shipping. Custom items cannot be returned.
                    </p>
@@ -286,9 +286,9 @@ export default function ProductDetails() {
                    <details className="cursor-pointer group">
                       <summary className="list-none flex justify-between items-center py-6 border-t border-zinc-900 group-hover:text-brand-accent transition-colors">
                          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Product Description</span>
-                         <ChevronRight className="w-4 h-4 text-zinc-800 group-open:rotate-90 transition-transform" />
+                         <ChevronRight className="w-4 h-4 text-zinc-400 group-open:rotate-90 transition-transform" />
                       </summary>
-                      <div className="py-8 text-zinc-400 font-light text-sm leading-relaxed whitespace-pre-line border-t border-zinc-900/50">
+                      <div className="py-8 text-zinc-300 font-light text-sm leading-relaxed whitespace-pre-line border-t border-zinc-900/50">
                          {product.description}
                          {"\n\n"}
                          <span className="text-white font-bold opacity-60">DETAILS:</span>{"\n"}
@@ -300,9 +300,9 @@ export default function ProductDetails() {
                    <details className="cursor-pointer group">
                       <summary className="list-none flex justify-between items-center py-6 border-t border-zinc-900 group-hover:text-brand-accent transition-colors">
                          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Shipping & Returns</span>
-                         <ChevronRight className="w-4 h-4 text-zinc-800 group-open:rotate-90 transition-transform" />
+                         <ChevronRight className="w-4 h-4 text-zinc-400 group-open:rotate-90 transition-transform" />
                       </summary>
-                      <div className="py-8 text-zinc-400 font-light text-sm space-y-6 leading-relaxed border-t border-zinc-900/50">
+                      <div className="py-8 text-zinc-300 font-light text-sm space-y-6 leading-relaxed border-t border-zinc-900/50">
                          <p>Fast worldwide shipping. 3-7 days delivery.</p>
                          <p>All custom orders are final. Please check details before ordering.</p>
                       </div>

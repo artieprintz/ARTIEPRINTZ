@@ -36,7 +36,7 @@ export default function Shop() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">
            <div>
               <h1 className="text-8xl md:text-9xl font-black tracking-tighter leading-[0.8] mb-6 italic uppercase">THE <span className="text-brand-accent">SHOP</span></h1>
-              <p className="text-zinc-600 text-[11px] uppercase tracking-[0.4em] font-medium">High-quality prints and custom streetwear</p>
+              <p className="text-zinc-300 text-[11px] uppercase tracking-[0.4em] font-medium">High-quality prints and custom streetwear</p>
            </div>
            
            <div className="flex items-center space-x-4">
@@ -74,7 +74,7 @@ export default function Shop() {
               <button 
                 onClick={() => setCategory('ALL')}
                 className={`px-8 py-3 text-[10px] uppercase font-black tracking-[0.2em] border transition-all ${
-                  selectedCategory === 'ALL' ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-white'
+                  selectedCategory === 'ALL' ? 'bg-white text-black border-white' : 'border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white'
                 }`}
               >
                 All Products
@@ -84,7 +84,7 @@ export default function Shop() {
                   key={cat.id}
                   onClick={() => setCategory(cat.id)}
                   className={`px-8 py-3 text-[10px] uppercase font-black tracking-[0.2em] border transition-all ${
-                    selectedCategory === cat.id ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:text-white'
+                    selectedCategory === cat.id ? 'bg-white text-black border-white' : 'border-zinc-700 text-zinc-300 hover:border-zinc-500 hover:text-white'
                   }`}
                 >
                   {cat.label}

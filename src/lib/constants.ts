@@ -253,5 +253,5 @@ export const CATEGORIES = [
   { id: 'POLAROID', label: 'Polaroids', image: '/polaroid/mainp.jpg' },
   { id: 'TSHIRT', label: 'T-Shirts', image: '/t shirt/maint.jpg' },
   { id: 'FRAME', label: 'Frames', image: '/frame/framesss.jpg' },
-  { id: 'MAGAZINE', label: 'Magazines', image: '/public/mag.jpg' },
+  { id: 'MAGAZINE', label: 'Magazines', image: '/mag.jpg' },
 ];

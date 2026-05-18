@@ -1,7 +1,9 @@
 import { motion } from 'motion/react';
 import { ShoppingBag, FormInput, MessageCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HowToOrder() {
+  const navigate = useNavigate();
   const steps = [
     {
       number: '01',
@@ -47,7 +49,7 @@ export default function HowToOrder() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="group relative p-10 bg-zinc-950 border border-zinc-900 overflow-hidden hover:border-brand-accent transition-all duration-500"
+            className="group relative p-10 bg-zinc-950 border border-zinc-800 overflow-hidden hover:border-brand-accent transition-all duration-500"
           >
             <div className="absolute top-0 right-0 p-8 text-7xl font-black italic text-white/[0.03] group-hover:text-brand-accent/[0.05] transition-colors">
               {step.number}
@@ -59,7 +61,7 @@ export default function HowToOrder() {
               {step.title}
             </h3>
             
-            <p className="text-zinc-500 text-sm font-bold leading-relaxed uppercase tracking-wider italic">
+            <p className="text-zinc-350 text-sm font-bold leading-relaxed uppercase tracking-wider italic">
               {step.description}
             </p>
 
@@ -74,20 +76,20 @@ export default function HowToOrder() {
         ))}
       </div>
 
-      <div className="mt-40 p-16 border border-zinc-900 bg-zinc-950/50 rounded-lg text-center relative overflow-hidden">
+      <div className="mt-40 p-16 border border-zinc-800 bg-zinc-950/50 rounded-lg text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-brand-accent/5 blur-[120px] rounded-full -z-10"></div>
         <h2 className="text-4xl md:text-5xl font-black italic text-white uppercase tracking-tighter mb-10">READY TO GET STARTED?</h2>
-        <p className="text-zinc-500 text-[12px] uppercase tracking-[0.5em] mb-12 font-bold italic">Start exploring our collection today.</p>
+        <p className="text-zinc-350 text-[12px] uppercase tracking-[0.5em] mb-12 font-bold italic">Start exploring our collection today.</p>
         <button 
-           onClick={() => window.location.href = '/shop'}
-           className="bg-white text-black px-16 py-7 text-[12px] font-black uppercase tracking-[0.4em] inline-block hover:bg-brand-accent hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl italic"
+           onClick={() => navigate('/shop')}
+           className="bg-white text-black px-16 py-7 text-[12px] font-black uppercase tracking-[0.4em] inline-block hover:bg-brand-accent hover:text-white transition-all transform hover:-translate-y-1 shadow-2xl italic cursor-pointer"
         >
           Explore Shop
         </button>
       </div>
 
       <div className="mt-32 text-center">
-        <p className="text-zinc-700 text-[10px] tracking-[1em] uppercase font-black italic">ARTiE PRINTz_SYSTEM_V.1.0</p>
+        <p className="text-zinc-500 text-[10px] tracking-[1em] uppercase font-black italic">ARTiE PRINTz_SYSTEM_V.1.0</p>
       </div>
     </div>
   );

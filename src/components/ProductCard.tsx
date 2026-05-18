@@ -97,7 +97,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-lg font-bold tracking-tight italic group-hover:text-brand-accent transition-colors">
             {product.name}
           </h3>
-          <p className="text-zinc-600 text-[10px] uppercase tracking-widest mt-2 font-medium">
+          <p className="text-zinc-400 text-[10px] uppercase tracking-widest mt-2 font-medium">
             Collection 0{Math.floor(Math.random() * 5) + 1}
           </p>
         </div>
