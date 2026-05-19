@@ -4,7 +4,8 @@ import { useCartStore } from '../store/useCartStore';
 import { formatCurrency, cn } from '../lib/utils';
 import { dbService } from '../services/db';
 import { motion } from 'motion/react';
-import { ArrowLeft, Loader2, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Loader2, ShieldCheck, QrCode, Smartphone, Copy, Check } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 export default function Checkout() {
   const { items, total, clearCart } = useCartStore();
@@ -23,6 +24,8 @@ export default function Checkout() {
   });
 
   const [shippingMethod, setShippingMethod] = useState<'DELIVERY' | 'PICKUP'>('DELIVERY');
+  const [paymentMethod, setPaymentMethod] = useState<'QR' | 'UPI'>('QR');
+  const [copied, setCopied] = useState(false);
   const [discount, setDiscount] = useState(0);
   const [promoError, setPromoError] = useState('');
 
@@ -61,7 +64,7 @@ export default function Checkout() {
       const order = await dbService.createOrder({
         customer_name: formData.fullName,
         phone: formData.whatsapp,
-        address: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip} | ${shippingMethod}${formData.notes ? ' | Notes: ' + formData.notes : ''}${discount > 0 ? ` | Promo: ${formData.promoCode} (-${discount})` : ''}`,
+        address: `${formData.address}, ${formData.city}, ${formData.state} - ${formData.zip} | ${shippingMethod} | Payment: ${paymentMethod === 'QR' ? 'QR Code' : 'UPI'}${formData.notes ? ' | Notes: ' + formData.notes : ''}${discount > 0 ? ` | Promo: ${formData.promoCode} (-${discount})` : ''}`,
         total: totalAmount,
       }, items.map(item => ({
         product_id: item.productId,
@@ -89,6 +92,7 @@ export default function Checkout() {
               { name: "Phone", value: formData.whatsapp, inline: true },
               { name: "Address", value: `${formData.address}, ${formData.city}`, inline: false },
               { name: "Total", value: formatCurrency(totalAmount), inline: true },
+              { name: "Payment Option", value: paymentMethod === 'QR' ? "QR Code" : "UPI Direct", inline: true },
               { name: "Items", value: items.map(i => `• ${i.name} x${i.quantity}`).join('\n') }
             ],
             timestamp: new Date().toISOString()
@@ -111,7 +115,8 @@ export default function Checkout() {
         total: totalAmount,
         customerName: formData.fullName,
         shippingMethod,
-        shippingFee
+        shippingFee,
+        paymentMethod
       };
       
       clearCart();
@@ -228,6 +233,38 @@ export default function Checkout() {
                           </button>
                        </div>
                     </div>
+
+                    {/* Payment Option Selection */}
+                    <div className="pt-8 border-t border-zinc-900">
+                       <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold mb-6 text-zinc-300 italic">Payment Option</h3>
+                       <div className="grid grid-cols-2 gap-4">
+                          <button 
+                            type="button"
+                            onClick={() => setPaymentMethod('QR')}
+                            className={cn(
+                              "px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] italic border transition-all flex flex-col items-center justify-center space-y-2",
+                              paymentMethod === 'QR' ? "bg-white text-black border-white" : "bg-zinc-950 text-zinc-300 border-zinc-700 hover:border-zinc-500 hover:text-white"
+                            )}
+                          >
+                            <QrCode className="w-4 h-4" />
+                            <span>Pay by QR</span>
+                            <span className="text-[8px] mt-1 opacity-60 font-bold">Scan QR Code</span>
+                          </button>
+                          <button 
+                            type="button"
+                            onClick={() => setPaymentMethod('UPI')}
+                            className={cn(
+                              "px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] italic border transition-all flex flex-col items-center justify-center space-y-2",
+                              paymentMethod === 'UPI' ? "bg-white text-black border-white" : "bg-zinc-950 text-zinc-300 border-zinc-700 hover:border-zinc-500 hover:text-white"
+                            )}
+                          >
+                            <Smartphone className="w-4 h-4" />
+                            <span>Pay by UPI</span>
+                            <span className="text-[8px] mt-1 opacity-60 font-bold">UPI ID / App</span>
+                          </button>
+                       </div>
+                    </div>
+
                     <textarea 
                       name="notes"
                       placeholder="ORDER NOTES (OPTIONAL)"
@@ -235,6 +272,80 @@ export default function Checkout() {
                       className="w-full bg-zinc-900/50 border border-zinc-700 px-8 py-5 text-[11px] uppercase tracking-[0.2em] font-bold focus:outline-none focus:border-brand-accent focus:bg-zinc-900 transition-all text-white placeholder:text-zinc-400 resize-none"
                       onChange={handleInputChange}
                     />
+
+                    {/* Dynamic Payment details box directly in checkout page */}
+                    <div className="pt-8 border-t border-zinc-900">
+                       {paymentMethod === 'QR' ? (
+                          <div className="bg-zinc-950 border border-zinc-900 p-8 flex flex-col items-center">
+                             <div className="flex items-center space-x-3 mb-6 text-brand-accent">
+                                <QrCode className="w-5 h-5" />
+                                <h4 className="text-[10px] font-black tracking-[0.3em] uppercase italic">Scan to Pay Now</h4>
+                             </div>
+                             <div className="p-4 bg-white rounded-xl mb-6">
+                                <QRCodeSVG 
+                                  value={`upi://pay?pa=9962200444@pthdfc&pn=ARTiE_PRINTz&am=${totalAmount}&cu=INR`}
+                                  size={160}
+                                  level="H"
+                                />
+                             </div>
+                             <div className="text-center">
+                                <p className="text-white font-mono text-lg font-black mb-1 italic">{formatCurrency(totalAmount)}</p>
+                                <p className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest italic">UPI ID: 9962200444@pthdfc</p>
+                             </div>
+                          </div>
+                       ) : (
+                          <div className="bg-zinc-950 border border-zinc-900 p-8 flex flex-col items-center">
+                             <div className="flex items-center space-x-3 mb-6 text-brand-accent">
+                                <Smartphone className="w-5 h-5" />
+                                <h4 className="text-[10px] font-black tracking-[0.3em] uppercase italic">Pay via UPI App / ID</h4>
+                             </div>
+                             
+                             <div className="w-full space-y-4">
+                                <a 
+                                  href={`upi://pay?pa=9962200444@pthdfc&pn=ARTiE_PRINTz&am=${totalAmount}&cu=INR`}
+                                  className="w-full bg-white text-black hover:bg-brand-accent hover:text-white py-5 px-6 text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center space-x-3 transition-all italic shadow-lg"
+                                >
+                                  <Smartphone className="w-4 h-4" />
+                                  <span>Pay Instantly via UPI App</span>
+                                </a>
+
+                                <div className="text-zinc-650 text-[9px] uppercase tracking-widest font-black italic text-center">
+                                  — OR COPY UPI ID —
+                                </div>
+
+                                <div className="flex items-center bg-[#080808] border border-zinc-805 p-4">
+                                   <span className="flex-grow text-[10px] font-mono text-zinc-400 font-bold text-left select-all">9962200444@pthdfc</span>
+                                   <button 
+                                     type="button"
+                                     onClick={() => {
+                                       navigator.clipboard.writeText('9962200444@pthdfc');
+                                       setCopied(true);
+                                       setTimeout(() => setCopied(false), 2000);
+                                     }}
+                                     className="px-4 py-2 bg-zinc-900 border border-zinc-800 text-brand-accent text-[9px] font-black uppercase tracking-wider hover:bg-white hover:text-black transition-all italic flex items-center space-x-2"
+                                   >
+                                     {copied ? (
+                                       <>
+                                         <Check className="w-3 h-3 text-green-500" />
+                                         <span>Copied</span>
+                                       </>
+                                     ) : (
+                                       <>
+                                         <Copy className="w-3 h-3" />
+                                         <span>Copy</span>
+                                       </>
+                                     )}
+                                   </button>
+                                </div>
+                             </div>
+
+                             <div className="text-center mt-6">
+                                <p className="text-white font-mono text-lg font-black mb-2 italic">{formatCurrency(totalAmount)}</p>
+                                <p className="text-zinc-500 text-[10px] uppercase font-bold tracking-widest italic">Payable to: ARTiE PRINTz</p>
+                             </div>
+                          </div>
+                       )}
+                    </div>
                  </div>
               </div>
 

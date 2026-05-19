@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, Link, Navigate } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import confetti from 'canvas-confetti';
 import { motion } from 'motion/react';
-import { CheckCircle2, MessageCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle2, MessageCircle, ArrowRight, QrCode, Smartphone, Copy, Check } from 'lucide-react';
 import { formatCurrency } from '../lib/utils';
 
 export default function OrderSuccess() {
   const location = useLocation();
   const order = location.state;
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (order) {
@@ -30,7 +31,9 @@ export default function OrderSuccess() {
       `- ${i.name} x ${i.quantity}${i.uploadUrl ? `\n  (Print Photo: ${i.uploadUrl})` : ''}`
     ).join('\n');
     
-    const message = `Hi ARTiE PRINTz,\nI placed an order.\n\nOrder ID: ${order.orderId}\nProducts:\n${productsText}\nShipping: ${order.shippingMethod} (${formatCurrency(order.shippingFee)})\nTotal: ${formatCurrency(order.total)}\nCustomer: ${order.customerName}\n\nI am attaching my high-quality photos here for printing. Please confirm my order.`;
+    const paymentMethodText = order.paymentMethod === 'UPI' ? 'Direct UPI' : 'QR Code (Scan)';
+    
+    const message = `Hi ARTiE PRINTz,\nI placed an order.\n\nOrder ID: ${order.orderId}\nProducts:\n${productsText}\nShipping: ${order.shippingMethod} (${formatCurrency(order.shippingFee)})\nTotal: ${formatCurrency(order.total)}\nPayment Method: ${paymentMethodText}\nCustomer: ${order.customerName}\n\nI am attaching my high-quality photos here for printing. Please confirm my order.`;
     
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/919962200444?text=${encodedMessage}`, '_blank');
@@ -66,21 +69,78 @@ export default function OrderSuccess() {
                 </p>
              </div>
 
-             {/* UPI Payment Section */}
-             <div className="bg-zinc-950 border border-zinc-900 p-8 flex flex-col items-center">
-                <h4 className="text-[10px] font-black tracking-[0.3em] uppercase mb-8 text-brand-accent italic">Scan to Pay via UPI</h4>
-                <div className="p-4 bg-white rounded-xl mb-8">
-                   <QRCodeSVG 
-                     value={`upi://pay?pa=9962200444@pthdfc&pn=ARTiE_PRINTz&am=${order.total}&cu=INR`}
-                     size={200}
-                     level="H"
-                   />
-                </div>
-                <div className="text-center">
-                   <p className="text-white font-mono text-lg font-black mb-2 italic">{formatCurrency(order.total)}</p>
-                   <p className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest italic">UPI ID: 9962200444@pthdfc</p>
-                </div>
-             </div>
+             {/* UPI / QR Payment Section */}
+             {(!order.paymentMethod || order.paymentMethod === 'QR') ? (
+               <div className="bg-zinc-950 border border-zinc-900 p-8 flex flex-col items-center">
+                  <div className="flex items-center space-x-3 mb-6 text-brand-accent">
+                     <QrCode className="w-5 h-5" />
+                     <h4 className="text-[10px] font-black tracking-[0.3em] uppercase italic">Scan to Pay via QR</h4>
+                  </div>
+                  <div className="p-4 bg-white rounded-xl mb-8">
+                     <QRCodeSVG 
+                       value={`upi://pay?pa=9962200444@pthdfc&pn=ARTiE_PRINTz&am=${order.total}&cu=INR`}
+                       size={200}
+                       level="H"
+                     />
+                  </div>
+                  <div className="text-center">
+                     <p className="text-white font-mono text-lg font-black mb-2 italic">{formatCurrency(order.total)}</p>
+                     <p className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest italic">UPI ID: 9962200444@pthdfc</p>
+                  </div>
+               </div>
+             ) : (
+               <div className="bg-zinc-950 border border-zinc-900 p-8 flex flex-col items-center">
+                  <div className="flex items-center space-x-3 mb-6 text-brand-accent">
+                     <Smartphone className="w-5 h-5" />
+                     <h4 className="text-[10px] font-black tracking-[0.3em] uppercase italic">Pay via UPI App / ID</h4>
+                  </div>
+                  
+                  <div className="w-full space-y-6">
+                     {/* Pay Button for Mobile Users */}
+                     <a 
+                       href={`upi://pay?pa=9962200444@pthdfc&pn=ARTiE_PRINTz&am=${order.total}&cu=INR`}
+                       className="w-full bg-white text-black hover:bg-brand-accent hover:text-white py-5 px-8 text-[11px] font-black uppercase tracking-[0.3em] flex items-center justify-center space-x-3 transition-all italic shadow-lg"
+                     >
+                       <Smartphone className="w-4 h-4" />
+                       <span>Pay Instantly via UPI App</span>
+                     </a>
+
+                     <div className="text-zinc-600 text-[9px] uppercase tracking-widest font-black italic text-center">
+                       — OR PAY TO UPI ID —
+                     </div>
+
+                     {/* Copy UPI ID Box */}
+                     <div className="flex items-center bg-[#080808] border border-zinc-800 p-4">
+                        <span className="flex-grow text-[10px] font-mono text-zinc-400 font-bold text-left select-all">9962200444@pthdfc</span>
+                        <button 
+                          onClick={() => {
+                            navigator.clipboard.writeText('9962200444@pthdfc');
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2000);
+                          }}
+                          className="px-4 py-2 bg-zinc-900 border border-zinc-800 text-brand-accent text-[9px] font-black uppercase tracking-wider hover:bg-white hover:text-black transition-all italic flex items-center space-x-2"
+                        >
+                          {copied ? (
+                            <>
+                              <Check className="w-3 h-3 text-green-500" />
+                              <span>Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                     </div>
+                  </div>
+
+                  <div className="text-center mt-6">
+                     <p className="text-white font-mono text-lg font-black mb-2 italic">{formatCurrency(order.total)}</p>
+                     <p className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest italic">Payable to: ARTiE PRINTz</p>
+                  </div>
+               </div>
+             )}
              
              <div className="pt-10 flex flex-col md:flex-row gap-6">
                 <button 
