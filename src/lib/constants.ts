@@ -177,9 +177,10 @@ export const PRODUCTS: Product[] = [
     category: 'TSHIRT',
     description: 'Choose your fit and finish: Normal, Oversized or Acid Washed. Available in multiple sizes. Coordinate design via WhatsApp.',
     price: 499,
-    image: '/t shirt/couple/only.jpg',
+    image: '/t shirt/couple/two.jpg',
     images: [
       '/t shirt/couple/only.jpg',
+      '/t shirt/couple/two.jpg',
       '/t shirt/over.jpg'
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
@@ -189,20 +190,6 @@ export const PRODUCTS: Product[] = [
       'Oversized': 599,
       'Acid Washed': 699
     }
-  },
-  {
-    id: 'custom-tshirt-normal',
-    name: 'NORMAL CUSTOM T-SHIRT',
-    category: 'TSHIRT',
-    description: 'Premium heavy cotton t-shirt with your custom design. Coordinate design via WhatsApp.',
-    price: 499,
-    image: '/t shirt/normal/main.png',
-    images: [
-      '/t shirt/normal/main.png',
-      '/t shirt/normal.jpg'
-    ],
-    sizes: ['S', 'M', 'L', 'XL', 'XXL']
-
   },
   {
     id: 'spider man t-shirt',
@@ -218,6 +205,21 @@ export const PRODUCTS: Product[] = [
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL']
   },
+  {
+    id: 'custom-tshirt-normal',
+    name: 'NORMAL CUSTOM T-SHIRT',
+    category: 'TSHIRT',
+    description: 'Premium heavy cotton t-shirt with your custom design. Coordinate design via WhatsApp.',
+    price: 499,
+    image: '/t shirt/normal/main.png',
+    images: [
+      '/t shirt/normal/main.png',
+      '/t shirt/normal.jpg'
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL']
+
+  },
+
   {
     id: 'custom-tshirt-oversized',
     name: 'OVERSIZED CUSTOM T-SHIRT',
