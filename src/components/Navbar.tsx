@@ -29,6 +29,7 @@ export default function Navbar() {
     { title: 'Shop', path: '/shop' },
     { title: 'Bulk Orders', path: '/commercial' },
     { title: 'How to Order', path: '/how-to-order' },
+    { title: 'About', path: '/about' },
   ];
 
   return (
@@ -37,7 +38,7 @@ export default function Navbar() {
         scrolled ? 'bg-black/80 backdrop-blur-md py-4 shadow-xl' : 'bg-transparent py-8'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-10 flex justify-between items-center text-white">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-8 flex justify-between items-center text-white">
         <Link 
           to="/" 
           className="text-2xl font-black tracking-tighter italic hover:opacity-70 transition-opacity"

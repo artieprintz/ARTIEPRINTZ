@@ -1,5 +1,5 @@
 
-export type Category = 'POSTER' | 'POLAROID' | 'TSHIRT' | 'FRAME' | 'MAGAZINE';
+export type Category = 'POSTER' | 'POLAROID' | 'TSHIRT' | 'FRAME' | 'MAGAZINE' | 'TOTEBAG';
 
 export interface Product {
   id: string;
@@ -20,7 +20,7 @@ export interface Product {
 // To add new products: Copy a product object and give it a unique 'id'
 export const PRODUCTS: Product[] = [
   {
-    id: 'single-poster',
+    id: 'anime-posters-naruto',
     name: 'SINGLE WALL POSTER',
     category: 'POSTER',
     description: 'A single custom-printed wall poster. High-resolution finish.',
@@ -39,7 +39,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'poster-pack-3',
+    id: 'custom-wall-posters-pack-3',
     name: '3 WALL POSTER PACK',
     category: 'POSTER',
     description: 'A curated set of 3 custom wall posters. High-quality print.',
@@ -58,7 +58,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'poster-pack-5',
+    id: 'custom-wall-posters-pack-5',
     name: '5 WALL POSTER PACK',
     category: 'POSTER',
     description: 'A curated set of 5 custom wall posters. Perfect for wall galleries.',
@@ -77,7 +77,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'poster-pack-10',
+    id: 'custom-wall-posters-pack-10',
     name: '10 WALL POSTER PACK',
     category: 'POSTER',
     description: 'Massive collection of 10 custom wall posters for enthusiasts.',
@@ -95,7 +95,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'poster-pack-15',
+    id: 'custom-wall-posters-pack-15',
     name: '15 WALL POSTER PACK',
     category: 'POSTER',
     description: 'The ultimate 15 custom wall poster collection for serious collectors.',
@@ -113,7 +113,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'magazine-prints',
+    id: 'custom-luxury-magazine-prints',
     name: 'CUSTOM MAGAZINE PRINTS',
     category: 'MAGAZINE',
     description: 'Your life, printed as a custom luxury magazine.',
@@ -132,7 +132,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'polaroid-prints',
+    id: 'custom-polaroid-prints-online',
     name: 'CUSTOM POLAROID PRINTS',
     category: 'POLAROID',
     description: 'Classic custom polaroid style prints of your favorite photos.',
@@ -152,7 +152,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'classic-frames',
+    id: 'custom-photo-frame-chennai',
     name: 'CUSTOM CLASSIC FRAMES',
     category: 'FRAME',
     description: 'High-quality custom frames to preserve your memories.',
@@ -172,7 +172,7 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'couple tshirt',
+    id: 'custom-couple-tshirt',
     name: 'ONLY YOU T-SHIRT',
     category: 'TSHIRT',
     description: 'Choose your fit and finish: Normal, Oversized or Acid Washed. Available in multiple sizes. Coordinate design via WhatsApp.',
@@ -192,7 +192,17 @@ export const PRODUCTS: Product[] = [
     }
   },
   {
-    id: 'spider man t-shirt',
+    id: 'kadinama-iru-totebag',
+    name: 'KADINAMA IRU TOTEBAG',
+    category: 'TOTEBAG',
+    description: 'High-quality canvas tote bag with your custom design. Durable and eco-friendly.',
+    price: 399,
+    image: '/tote.jpg',
+    images: ['/tote/pp.png', '/tote/blackk.png'],
+    sizes: ['Sandal', 'Black']
+  },
+  {
+    id: 'spider-man-custom-tshirt',
     name: 'SPIDER MAN T-SHIRT',
     category: 'TSHIRT',
     description: 'Premium heavy cotton t-shirt with your custom design. Coordinate design via WhatsApp.',
@@ -206,7 +216,7 @@ export const PRODUCTS: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL']
   },
   {
-    id: 'custom-tshirt-normal',
+    id: 'normal-custom-tshirt',
     name: 'NORMAL CUSTOM T-SHIRT',
     category: 'TSHIRT',
     description: 'Premium heavy cotton t-shirt with your custom design. Coordinate design via WhatsApp.',
@@ -221,7 +231,7 @@ export const PRODUCTS: Product[] = [
   },
 
   {
-    id: 'custom-tshirt-oversized',
+    id: 'oversized-custom-tshirt',
     name: 'OVERSIZED CUSTOM T-SHIRT',
     category: 'TSHIRT',
     description: 'Relaxed fit heavyweight cotton tee with your custom design. Coordinate design via WhatsApp.',
@@ -235,7 +245,7 @@ export const PRODUCTS: Product[] = [
     sizes: ['S', 'M', 'L', 'XL', 'XXL']
   },
   {
-    id: 'custom-tshirt-acidwashed',
+    id: 'acid-washed-custom-tshirt',
     name: 'ACID WASHED CUSTOM T-SHIRT',
     category: 'TSHIRT',
     description: 'Vintage finish acid washed premium tee with your custom design. Coordinate design via WhatsApp.',
@@ -247,6 +257,16 @@ export const PRODUCTS: Product[] = [
       '/t shirt/over.jpg'
     ],
     sizes: ['S', 'M', 'L', 'XL', 'XXL']
+  },
+  {
+    id: 'custom-tote-bag',
+    name: 'CUSTOM TOTE BAG',
+    category: 'TOTEBAG',
+    description: 'High-quality canvas tote bag with your custom design. Durable and eco-friendly.',
+    price: 399,
+    image: '/tote.jpg',
+    images: ['/tote.jpg', '/tote-black.jpg'],
+    sizes: ['Sandal', 'Black']
   }
 ];
 
@@ -256,4 +276,5 @@ export const CATEGORIES = [
   { id: 'TSHIRT', label: 'T-Shirts', image: '/t shirt/maint.jpg' },
   { id: 'FRAME', label: 'Frames', image: '/frame/framesss.jpg' },
   { id: 'MAGAZINE', label: 'Magazines', image: '/mag.jpg' },
+  { id: 'TOTEBAG', label: 'Tote Bags', image: '/tote.jpg' },
 ];

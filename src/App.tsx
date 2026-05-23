@@ -13,6 +13,8 @@ import FAQ from './pages/FAQ';
 import Admin from './pages/Admin';
 import WishlistPage from './pages/WishlistPage';
 import CommercialPrinting from './pages/CommercialPrinting';
+import About from './pages/About';
+import NotFound from './pages/NotFound';
 import PromoModal from './components/PromoModal';
 import { useEffect } from 'react';
 import { useCartStore } from './store/useCartStore';
@@ -50,15 +52,18 @@ export default function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/success" element={<OrderSuccess />} />
             <Route path="/how-to-order" element={<HowToOrder />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/about" element={<About />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/commercial" element={<CommercialPrinting />} />
+            {/* SEO Friendly Product Route at the bottom so it doesn't overlap */}
+            <Route path="/:id" element={<ProductDetails />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </motion.main>
       </AnimatePresence>

@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import WhatsAppButton from '../components/WhatsAppButton';
+import SEO from '../components/SEO';
 
 export default function FAQ() {
   const faqs = [
@@ -9,10 +10,30 @@ export default function FAQ() {
     { q: "DO YOU DO CUSTOM BULK ORDERS?", a: "Yes, we handle bulk orders for events, brands, and shoots. Email us for curated pricing." }
   ];
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen pt-40 pb-40 px-10 max-w-4xl mx-auto bg-[#080808]">
+       <SEO
+         title="FAQ — Printing Process & Ordering Guide | ARTiE PRINTz"
+         description="Frequently asked questions about ARTiE PRINTz custom printing processes, bulk order pricing, print damage replacement policies, and dispatch times."
+         keywords="printing faq, custom polaroid cancel order, bulk print solutions, order issues artie printz, whatsapp print contact"
+         schema={faqSchema}
+       />
        <h1 className="text-8xl md:text-9xl font-black tracking-tighter italic mb-20 uppercase text-white">THE <span className="text-brand-accent">FAQ</span></h1>
        
+       <h2 className="sr-only">Frequently Asked Questions</h2>
        <div className="space-y-6">
           {faqs.map((faq, i) => (
             <details key={i} className="group cursor-pointer border border-zinc-800 bg-zinc-900/30 overflow-hidden">

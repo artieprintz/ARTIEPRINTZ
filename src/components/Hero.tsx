@@ -9,7 +9,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 text-center">
         <img 
           src="/hero-bg.jpg" 
-          alt="Art background"
+          alt="ARTiE PRINTz custom premium print showcase"
           className="w-full h-full object-cover opacity-60 scale-105 brightness-[0.4]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />

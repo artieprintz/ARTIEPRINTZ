@@ -25,10 +25,10 @@ export default function ProductCard({ product }: ProductCardProps) {
       viewport={{ once: true }}
       className="group"
     >
-      <Link to={`/product/${product.id}`} className="block relative aspect-[3/4] overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl transition-all hover:border-zinc-700">
+      <Link to={`/${product.id}`} className="block relative aspect-[3/4] overflow-hidden bg-zinc-900 border border-zinc-800 shadow-2xl transition-all hover:border-zinc-700">
         <img 
           src={product.image} 
-          alt={product.name}
+          alt={`${product.name} by ARTiE PRINTz`}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
         />
         <div className="absolute inset-0 bg-gradient-to-tr from-[#080808]/80 to-transparent group-hover:opacity-40 transition-opacity" />

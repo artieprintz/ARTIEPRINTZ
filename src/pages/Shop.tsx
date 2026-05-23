@@ -4,6 +4,7 @@ import { PRODUCTS, CATEGORIES, Category } from '../lib/constants';
 import ProductCard from '../components/ProductCard';
 import { motion, AnimatePresence } from 'motion/react';
 import { SlidersHorizontal, Search, X } from 'lucide-react';
+import SEO from '../components/SEO';
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,8 +30,48 @@ export default function Shop() {
     setSearchParams(searchParams);
   };
 
+  const SEO_METAS: Record<string, { title: string; description: string; keywords: string }> = {
+    ALL: {
+      title: "The Shop — Premium Custom Prints & Custom Streetwear | ARTiE PRINTz",
+      description: "Browse the full ARTiE PRINTz catalog. Customize and order polaroids, wall poster packs, couple oversized t-shirts, acid wash premium garments, frames, and magazines.",
+      keywords: "custom products online, personalized gifts, custom printing, custom clothing store, polaroids india, buy poster packs"
+    },
+    POSTER: {
+      title: "Custom Wall Poster Packs (A5, A4, A3) Online | ARTiE PRINTz",
+      description: "Order premium high-resolution custom printed poster packs (packs of 1, 3, 5, 10, or 15). Choose your custom image sizes with clean matte finish. Quick dispatch.",
+      keywords: "buy wall posters online, custom poster packs, A3 poster print, aesthetic posters, anime posters india, wall decor posters"
+    },
+    POLAROID: {
+      title: "Custom Polaroid Photo Prints Online | ARTiE PRINTz",
+      description: "Turn your gallery snapshots into iconic custom retro Polaroid prints. Print packages of 10, 15, 20, or 30 high-gloss durable polaroids. Perfect memory gifts.",
+      keywords: "custom polaroid printing, order polaroid online, mini polaroids, customized polaroid photos, memory gifts india"
+    },
+    TSHIRT: {
+      title: "Custom Printed Oversized & Acid Wash T-Shirts | ARTiE PRINTz",
+      description: "Order custom heavyweight cotton graphic tees. Select your fit: Normal, Oversized, or Acid Washed. Upload your design and coordinate over WhatsApp.",
+      keywords: "custom oversized tees, acid washed t-shirts, couple custom t-shirt, print custom t-shirt online, vintage washed tees"
+    },
+    FRAME: {
+      title: "Custom Classic Photo Frame Printing Online | ARTiE PRINTz",
+      description: "Preserve beautiful memories with our sleek custom classic photo frame prints. Available in A5, A4, and A3 frames with high durability and clean glass finish.",
+      keywords: "photo frames online, custom framed printing, customized frames india, frame gift items, order picture frames"
+    },
+    MAGAZINE: {
+      title: "Personalized Custom Life Magazine Layout Prints | ARTiE PRINTz",
+      description: "Make your life story look like a luxury fashion magazine! Print high-quality customized magazines in 4, 8, or 12 pages formats. Fully tailored design support.",
+      keywords: "custom magazine prints, personalized magazine layout, customizable booklet, premium memory photo book"
+    }
+  };
+
+  const currentSEO = SEO_METAS[selectedCategory] || SEO_METAS.ALL;
+
   return (
     <div className="bg-[#080808] min-h-screen">
+      <SEO
+        title={currentSEO.title}
+        description={currentSEO.description}
+        keywords={currentSEO.keywords}
+      />
       {/* Shop Header */}
       <section className="pt-40 pb-20 px-10 max-w-7xl mx-auto border-b border-zinc-900">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-12">

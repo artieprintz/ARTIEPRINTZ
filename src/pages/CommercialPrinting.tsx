@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { MessageCircle, FileText, CreditCard, Award, Layout, Mail, Layers, Phone } from 'lucide-react';
 import { formatCurrency } from '../lib/utils';
 import CommercialInquiryModal from '../components/CommercialInquiryModal';
+import SEO from '../components/SEO';
 
 export default function CommercialPrinting() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +23,11 @@ export default function CommercialPrinting() {
 
   return (
     <div className="min-h-screen bg-[#080808] pt-32 pb-20 px-6 sm:px-10">
+      <SEO
+        title="Bulk &amp; Commercial Printing Solutions | ARTiE PRINTz"
+        description="High-quality custom commercial print solutions at scale. Get wholesale pricing for custom business visiting cards, letterheads, brand envelopes, pamphlets, academic certificates, and multi-fold brochures."
+        keywords="commercial printing bulk quote, custom business cards, letterhead printing wholesale, certificates printing corporate, brochure and flyer printing india"
+      />
       <div className="max-w-7xl mx-auto">
         <header className="mb-24 text-center max-w-4xl mx-auto">
            <motion.div

@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { ShoppingBag, FormInput, MessageCircle, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 export default function HowToOrder() {
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ export default function HowToOrder() {
 
   return (
     <div className="min-h-screen pt-40 pb-40 px-6 max-w-7xl mx-auto bg-[#080808]">
+      <SEO
+        title="How To Order Custom Prints & Posters Online | ARTiE PRINTz"
+        description="Follow our step-by-step guide to customize and order polaroid photo packages, wall poster packs, framing options, and oversized graphic t-shirts easily via WhatsApp."
+        keywords="how to order custom prints, buy polaroids online, order custom wall posters, t-shirt design whatsapp, student photo framing"
+      />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PRODUCTS } from '../lib/constants';
 import { useCartStore } from '../store/useCartStore';
@@ -6,6 +6,7 @@ import { useWishlistStore } from '../store/useWishlistStore';
 import { formatCurrency, cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronRight, Info, ShoppingBag, ArrowLeft, CheckCircle2, Heart, Plus, Minus } from 'lucide-react';
+import SEO from '../components/SEO';
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -21,6 +22,17 @@ export default function ProductDetails() {
   const [customSize, setCustomSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    // Automatically switch the image when a size (color) is selected, 
+    // assuming the order of sizes matches the order of images.
+    if (product?.sizes && product.images && product.images.length >= product.sizes.length) {
+      const idx = product.sizes.indexOf(selectedSize);
+      if (idx !== -1 && idx < product.images.length) {
+        setActiveImageIndex(idx);
+      }
+    }
+  }, [selectedSize, product]);
 
   const [addedPopup, setAddedPopup] = useState(false);
   const [wishlistPopup, setWishlistPopup] = useState(false);
@@ -65,8 +77,45 @@ export default function ProductDetails() {
     }
   };
 
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": [
+      `https://artieprintz-bay.vercel.app${product.image}`,
+      ...(product.images || []).map(img => `https://artieprintz-bay.vercel.app${img}`)
+    ],
+    "description": product.description,
+    "sku": product.id,
+    "category": product.category,
+    "brand": {
+      "@type": "Brand",
+      "name": "ARTiE PRINTz"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": `https://artieprintz-bay.vercel.app/${product.id}`,
+      "priceCurrency": "INR",
+      "price": currentPrice,
+      "priceValidUntil": "2030-01-01",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "ARTiE PRINTz"
+      }
+    }
+  };
+
   return (
     <div className="bg-[#080808] min-h-screen pt-24 pb-32">
+      <SEO
+        title={`${product.name} — Premium Custom ${product.category} | ARTiE PRINTz`}
+        description={`${product.description} Order premium quality customized prints. Configure sizes and variants, and confirm easily over WhatsApp for instant print production.`}
+        keywords={`${product.name.toLowerCase()}, custom ${product.category.toLowerCase()} India, personalized photo printing, custom gift items, order ${product.id}`}
+        image={`https://artieprintz-bay.vercel.app${product.image}`}
+        schema={schema}
+      />
       <div className="max-w-7xl mx-auto px-10">
         {/* Breadcrumbs */}
         <div className="flex items-center space-x-2 text-[9px] uppercase tracking-[0.3em] font-medium text-zinc-350 mb-16">
@@ -92,7 +141,7 @@ export default function ProductDetails() {
                 >
                    <img 
                      src={product.images?.[activeImageIndex] || product.image} 
-                     alt={product.name}
+                     alt={`${product.name} by ARTiE PRINTz`}
                      className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-1000" 
                    />
                    <div className="absolute inset-0 bg-gradient-to-tr from-[#080808]/40 to-transparent pointer-events-none" />
@@ -110,7 +159,7 @@ export default function ProductDetails() {
                           activeImageIndex === idx ? "border-brand-accent scale-105" : "border-zinc-800 opacity-50 hover:opacity-100"
                         )}
                       >
-                         <img src={img} className="w-full h-full object-cover" alt={`Gallery ${idx}`} />
+                         <img src={img} className="w-full h-full object-cover" alt={`${product.name} Gallery Image ${idx + 1}`} />
                       </button>
                     ))}
                   </div>

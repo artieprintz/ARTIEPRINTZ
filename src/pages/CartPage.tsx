@@ -10,7 +10,7 @@ export default function CartPage() {
 
   // Suggestion Logic: Group single posters by size
   const singlePostersBySize = items.reduce((acc: Record<string, number>, item) => {
-    if (item.productId === 'single-poster') {
+    if (item.productId === 'anime-posters-naruto') {
       acc[item.size || 'default'] = (acc[item.size || 'default'] || 0) + item.quantity;
     }
     return acc;

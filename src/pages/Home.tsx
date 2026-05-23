@@ -6,6 +6,7 @@ import { ArrowRight, ArrowLeft, Box, Image as ImageIcon, Shirt, Layout, BookOpen
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../store/useCartStore';
 import { useRef } from 'react';
+import SEO from '../components/SEO';
 
 export default function Home() {
   const featuredProducts = [
@@ -29,24 +30,74 @@ export default function Home() {
     }
   };
 
+  const homeSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ARTiE PRINTz",
+      "url": "https://artieprintz-bay.vercel.app",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://artieprintz-bay.vercel.app/shop?category={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ARTiE PRINTz",
+      "url": "https://artieprintz-bay.vercel.app",
+      "logo": "https://artieprintz-bay.vercel.app/NEW%20LOGO.png",
+      "sameAs": [
+        "https://instagram.com/artieprintz"
+      ]
+    }
+  ];
+
   return (
     <div className="bg-[#080808] relative overflow-hidden">
+      <SEO
+        title="ARTiE PRINTz | Custom Polaroid Prints, Wall Posters & Apparel India"
+        description="Indian e-commerce hub for customized polaroid photos, heavy heavyweight oversized couple t-shirts, custom designer magazines, wall poster packs (A5, A4, A3) and premium custom classic photo frames. Fast global delivery. Order confirmation on WhatsApp."
+        keywords="custom polaroids online, wall poster packs India, custom oversized printed t-shirts, personalized life magazine design, classic photo frames online, student print shop, buy custom printing"
+        schema={homeSchema}
+      />
+      
       {/* Texture Overlays */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <img
           src="/product-placeholder.jpg"
           className="absolute top-0 left-0 w-full h-[200vh] object-cover opacity-[0.03] mix-blend-overlay"
-          alt="texture"
+          alt="ARTiE PRINTz retro grain texture overlay"
         />
         <img
           src="/product-placeholder.jpg"
           className="absolute top-[200vh] left-0 w-full h-[200vh] object-cover opacity-[0.02] mix-blend-screen"
-          alt="texture"
+          alt="ARTiE PRINTz premium print texture background"
         />
       </div>
 
       <div className="relative z-10">
         <Hero />
+
+        {/* New Product Launch */}
+        <section className="py-20 px-10 max-w-7xl mx-auto relative">
+           <div className="flex flex-col md:flex-row gap-12 items-center bg-zinc-950 border border-zinc-800 p-6 md:p-12 hover:border-brand-accent/50 transition-all group shadow-2xl">
+             <div className="w-full md:w-1/2 overflow-hidden aspect-[4/5] md:aspect-[4/3] relative bg-zinc-900">
+               <img src="/tote.jpg" alt="Kadinama Iru Tote Bag" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+               <div className="absolute inset-0 bg-brand-accent/0 group-hover:bg-brand-accent/10 transition-colors duration-500" />
+             </div>
+             <div className="w-full md:w-1/2 space-y-8">
+               <div className="inline-block bg-[#FF6B4A] text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1.5 italic">New Drop</div>
+               <h2 className="text-5xl md:text-7xl font-black tracking-tighter italic uppercase leading-[0.9]">KADINAMA IRU<br/><span className="text-zinc-500">TOTE BAG</span></h2>
+               <p className="text-zinc-400 text-lg font-light leading-relaxed">High-quality canvas tote bag featuring the 'Kadinama Iru' design. Durable, eco-friendly, and perfect for everyday use.</p>
+               <div className="text-3xl font-black italic">₹399</div>
+               <Link to="/kadinama-iru-totebag" className="inline-block px-10 py-5 bg-white text-black text-[11px] font-black uppercase tracking-[0.2em] hover:bg-brand-accent hover:text-white transition-all transform hover:-translate-y-1 italic">
+                 Shop This Tote
+               </Link>
+             </div>
+           </div>
+        </section>
 
         {/* Featured Products */}
         <section className="py-32 px-10 max-w-7xl mx-auto relative">
@@ -76,7 +127,7 @@ export default function Home() {
             <img
               src="/art.jpg"
               className="w-full h-full object-cover"
-              alt="art bg"
+              alt="ARTiE PRINTz custom printing collage and aesthetic wall art"
             />
           </div>
           <div className="max-w-7xl mx-auto px-10 mb-20 relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
@@ -146,7 +197,7 @@ export default function Home() {
             <img
               src="/bg.jpg"
               className="w-full h-full object-cover opacity-[0.05] grayscale"
-              alt="process bg"
+              alt="ARTiE PRINTz step-by-step custom order guide background wallpaper"
             />
           </div>
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center relative z-10">
@@ -193,7 +244,7 @@ export default function Home() {
               <img
                 src="/NEW LOGO.png"
                 className="w-full h-full object-cover transition-all duration-1000 hover:grayscale-0 opacity-60 hover:opacity-100"
-                alt="Order Process"
+                alt="ARTiE PRINTz brand logo and premium custom packaging badge"
               />
               <div className="absolute -bottom-8 -right-8 bg-white text-black p-8 shadow-2xl z-20 border border-zinc-200">
                 <div className="text-[10px] font-bold uppercase tracking-[0.3em] mb-2 text-zinc-400 font-bold">ESTIMATED</div>
