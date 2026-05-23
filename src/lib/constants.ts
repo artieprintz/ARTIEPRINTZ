@@ -197,9 +197,9 @@ export const PRODUCTS: Product[] = [
     category: 'TOTEBAG',
     description: 'High-quality canvas tote bag with your custom design. Durable and eco-friendly.',
     price: 399,
-    image: '/tote.jpg',
+    image: '/tote/blackk.png',
     images: ['/tote/pp.png', '/tote/blackk.png'],
-    sizes: ['Sandal', 'Black']
+    sizes: ['Off-white', 'Black']
   },
   {
     id: 'spider-man-custom-tshirt',

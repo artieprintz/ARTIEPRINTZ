@@ -84,7 +84,7 @@ export default function Home() {
         <section className="py-20 px-10 max-w-7xl mx-auto relative">
            <div className="flex flex-col md:flex-row gap-12 items-center bg-zinc-950 border border-zinc-800 p-6 md:p-12 hover:border-brand-accent/50 transition-all group shadow-2xl">
              <div className="w-full md:w-1/2 overflow-hidden aspect-[4/5] md:aspect-[4/3] relative bg-zinc-900">
-               <img src="/tote.jpg" alt="Kadinama Iru Tote Bag" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+               <img src="/tote/blackk.png" alt="Kadinama Iru Tote Bag" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
                <div className="absolute inset-0 bg-brand-accent/0 group-hover:bg-brand-accent/10 transition-colors duration-500" />
              </div>
              <div className="w-full md:w-1/2 space-y-8">
