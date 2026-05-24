@@ -147,8 +147,8 @@ export const PRODUCTS: Product[] = [
     priceMap: {
       '10 Photos': 150,
       '15 Photos': 200,
-      '20 Photos': 229,
-      '30 Photos': 399
+      '20 Photos': 249,
+      '30 Photos': 349
     }
   },
   {
